@@ -105,10 +105,11 @@
 				opt.complete();
 			}
 		}
-		request.setRequestHeader('Content-Type',opt.contentType);
 		if(opt.contentType === 'application/x-www-form-urlencode'){
+			request.setRequestHeader('Content-Type',opt.contentType);
 			sendData = encodeFormData(opt.data);
 		}else if(opt.contentType === 'application/json') {
+			request.setRequestHeader('Content-Type',opt.contentType);
 			sendData = JSON.stringify(opt.data);
 		}else if(opt.contentType === 'multipart/form-data') {
 			var fd = new FormData();

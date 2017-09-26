@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jinux-ajax-test</title>
+</head>
+<body>
+	<form action="">
+		<input type="file" id="file" />
+	</form>
+</body>
+<script src="/ajax.js"></script>
+<script>
+	var files = document.querySelector('#file');
+	files.onchange = function(ev){
+		console.log(files.files);
+		jinuxAjax({
+			url: '/upload',
+			type: 'POST',
+			data: {
+				name: 'admin',
+				age: 23
+			},
+			contentType: 'multipart/form-data',
+			files: [files.files[0]],
+			success:function(res){
+				console.log(res);
+			}
+		});
+	}
+</script>
+</html>
