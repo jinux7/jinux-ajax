@@ -16,10 +16,21 @@ app.use(express.static(__dirname + '/public'));
 
 //home页路由
 app.get('/api', function (req, res) {
-  res.send({
+  /*res.send({
     error_code : 3001,
     error_msg : "测试报错信息接口！！！"
-  });
+  });*/
+    setTimeout(function(){
+        res.send('abcdefg');    
+    },0);
+    
+});
+app.post('/api',function(req,res){
+    setTimeout(function(){
+        res.send({
+            name: '小明'
+        });    
+    },0);
 });
 
 app.listen(app.get('port'), function () {

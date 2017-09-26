@@ -1,14 +1,17 @@
-;(function(win,undefined){
+;(function(window,undefined){
 
 	// jinuxAjax挂载到window上
-	win.jinuxAjax = function(opt){
+	window.jinuxAjax = function(opt){
 		ieAjaxInit();
 		//默认参数配置
 		var defaultOpt = {
 			url:'',
 			type: 'GET',
 			data: null,
-			contentType: 'text/plain;charset=UTF-8',
+			contentType: 'application/x-www-form-urlencode',//'text/plain;charset=UTF-8','application/json','multipart/form-data'
+			timeOut: 5000,
+			files:[],
+			before: fn,
 			success: fn,
 			error: fn,
 			complete: fn
@@ -16,6 +19,8 @@
 
 		//参数对象继承获取新参数对象
 		var opt = Object.assign({}, defaultOpt, opt);
+
+		requestData(opt);
 
 	}
 
@@ -35,21 +40,109 @@
 	}
 
 	//ajax的get请求函数
-	function getData(url,data,success,error,complete){
+	function getData(opt){
+		var request = new XMLHttpRequest();
+		var timeoutFlag = false; //是否超时
+		//启动计时器，做超时处理
+		var timer = setTimeout(function(){
+			timeoutFlag = true;
+			request.abort();
+		},opt.timeOut);
 
+		request.open('GET',opt.url +'?'+ encodeFormData(opt.data));
+		opt.before(); //请求之前执行before函数
+		request.onreadystatechange = function(){
+			if(request.readyState === 4){
+				if(timeoutFlag) return;
+				clearTimeout(timer);
+				if(request.status === 200){
+					var type = request.getResponseHeader('Content-Type');
+					//检查type类型做相应的解析处理
+					if(type.indexOf('xml') !== -1 && request.responseXML){ //xml相应
+						opt.success(request.responseXML);
+					}else if(type === 'application/json') { //json相应
+						opt.success(JSON.parse(request.responseText));
+					}else {
+						opt.success(request.responseText);
+					}
+				}else {
+					opt.error(request);
+				}
+				opt.complete();
+			}
+		}
+		request.send(null);
 	}
 
 	//ajax的post请求函数
-	function postData(url,data,success,error,complete){
+	function postData(opt){
+		var request = new XMLHttpRequest(), sendData=null;
+		var timeoutFlag = false; //是否超时
+		//启动计时器，做超时处理
+		var timer = setTimeout(function(){
+			timeoutFlag = true;
+			request.abort();
+		},opt.timeOut);
+
+		request.open('POST',opt.url);
+		request.onreadystatechange = function(){
+			if(request.readyState === 4){
+				if(timeoutFlag) return;
+				clearTimeout(timer);
+				if(request.status === 200){
+					var type = request.getResponseHeader('Content-Type');
+					//检查type类型做相应的解析处理
+					if(type.indexOf('xml') !== -1 && request.responseXML){ //xml相应
+						opt.success(request.responseXML);
+					}else if(type === 'application/json') { //json相应
+						opt.success(JSON.parse(request.responseText));
+					}else {
+						opt.success(request.responseText);
+					}
+				}else {
+					opt.error(request);
+				}
+				opt.complete();
+			}
+		}
+		request.setRequestHeader('Content-Type',opt.contentType);
+		if(opt.contentType === 'application/x-www-form-urlencode'){
+			sendData = encodeFormData(opt.data);
+		}else if(opt.contentType === 'application/json') {
+			sendData = JSON.stringify(opt.data);
+		}else if(opt.contentType === 'multipart/form-data') {
+			var fd = new FormData();
+			for(var name in opt.data){
+				if( !opt.data.hasOwnProperty(name) ) continue;
+				if( typeof opt.data[name] === 'function' ) continue; 
+				fd.append(name,opt.data[name]);
+			}
+			for(var i=0; i<opt.files.length; i++){
+				fd.append('file'+i,opt.files[i]);
+			}
+			sendData = fd;
+		}
+
+		request.send(sendData);
 
 	}
+
+	//ajax请求函数，在函数内再调用get或者post
+	function requestData(opt){
+		if(opt.type === 'GET'){
+			getData(opt);
+		} else {
+			postData(opt);
+		}
+	}
+
 	// 定义一个空函数
 	function fn(){}
 
 	// 如果是ie6，创建XMLHttpRequest对象
 	function ieAjaxInit(){
-		if(win.XMLHttpRequest === undefined){
-			win.XMLHttpRequest = function(){
+		if(window.XMLHttpRequest === undefined){
+			window.XMLHttpRequest = function(){
 				try {
 					return new ActiveXObject('Msxml2.XMLHTTP.6.0');
 				}
