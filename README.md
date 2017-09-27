@@ -28,7 +28,7 @@ jinuxAjax({<br/>
 >	password: 123456<br/>
 }<br/>
 -----
-##### contentType -> post请求默认为: 'application/x-www-form-urlencode',发送参数为 name="admin"&password=123456 格式
+##### contentType -> post请求默认为: 'application/x-www-form-urlencoded',发送参数为 name="admin"&password=123456 格式
 				'application/json'，发送的参数以json格式发送
 				'multipart/form-data'，这个主意，当有文件上传的时候需要设置此属性	
 -----
@@ -46,3 +46,11 @@ jinuxAjax({<br/>
 -----
 `注意事项：在post请求，携带'multipart/form-data'数据的时候，比如FormData类型数据，不要request.setRequestHeader('Content-Type','multipart/form-data');
 		  在send数据的时候，ajax发现是FormData类型数据，会自动设置请求头的Content-Type类型，自己设置后台接收不到数据`
+=====
+=====
+### 服务器启动 npm server <br/>
+-----
+##### http://127.0.0.1:3000/test/get.html 
+-----
+##### /uploadFiles文件夹是存放测试上传文件的地方
+-----

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jinux-ajax-test</title>
+</head>
+<body>
+		<label for="">请输入要发送的内容-></label><input type="text" /><br/><br/>
+		<button>get请求</button>
+		<div class="content"></div>
+</body>
+<script src="/ajax.js"></script>
+<script>
+	document.querySelector('button').addEventListener('click',handler,false);
+	function handler(ev){
+		jinuxAjax({
+			url: '/get',
+			type: 'GET',
+			data: {
+				info: document.querySelector('input').value
+			},
+			success:function(res){
+				console.log(res.info);
+				document.querySelector('.content').innerHTML = '<p>您的IP：'+res.hostName+'</p><p>您发送的内容：'+res.info+'</p>';
+			}
+		});
+	}
+</script>
+</html>

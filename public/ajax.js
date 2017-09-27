@@ -8,7 +8,7 @@
 			url:'',
 			type: 'GET',
 			data: null,
-			contentType: 'application/x-www-form-urlencode',//'text/plain;charset=UTF-8','application/json','multipart/form-data'
+			contentType: 'application/x-www-form-urlencoded',//'text/plain;charset=UTF-8','application/json','multipart/form-data'
 			timeOut: 5000,
 			files:[],
 			before: fn,
@@ -24,7 +24,7 @@
 
 	}
 
-	//将json格式数据转成application/x-www-form-urlencode格式数据
+	//将json格式数据转成application/x-www-form-urlencoded格式数据
 	function encodeFormData(data){
 		if(!data) return '';
 		var pairs = [];
@@ -60,7 +60,7 @@
 					//检查type类型做相应的解析处理
 					if(type.indexOf('xml') !== -1 && request.responseXML){ //xml相应
 						opt.success(request.responseXML);
-					}else if(type === 'application/json') { //json相应
+					}else if(type.indexOf('application/json') !== -1) { //json相应
 						opt.success(JSON.parse(request.responseText));
 					}else {
 						opt.success(request.responseText);
@@ -94,7 +94,7 @@
 					//检查type类型做相应的解析处理
 					if(type.indexOf('xml') !== -1 && request.responseXML){ //xml相应
 						opt.success(request.responseXML);
-					}else if(type === 'application/json') { //json相应
+					}else if(type.indexOf('application/json') !== -1) { //json相应
 						opt.success(JSON.parse(request.responseText));
 					}else {
 						opt.success(request.responseText);
@@ -105,11 +105,11 @@
 				opt.complete();
 			}
 		}
-		if(opt.contentType === 'application/x-www-form-urlencode'){
-			request.setRequestHeader('Content-Type',opt.contentType);
+		if(opt.contentType === 'application/x-www-form-urlencoded'){
+			request.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 			sendData = encodeFormData(opt.data);
 		}else if(opt.contentType === 'application/json') {
-			request.setRequestHeader('Content-Type',opt.contentType);
+			request.setRequestHeader('Content-Type','application/json; charset=utf-8');
 			sendData = JSON.stringify(opt.data);
 		}else if(opt.contentType === 'multipart/form-data') {
 			var fd = new FormData();

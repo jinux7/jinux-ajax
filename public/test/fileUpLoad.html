@@ -6,14 +6,16 @@
 </head>
 <body>
 	<form action="">
-		<input type="file" id="file" />
+		<h3>可实现多文件上传!!</h3>
+		<input type="file" id="file" multiple="multiple" />
+		<h5></h5>
 	</form>
 </body>
 <script src="/ajax.js"></script>
 <script>
 	var files = document.querySelector('#file');
 	files.onchange = function(ev){
-		console.log(files.files);
+		var filesArr = Array.from(files.files); //类数组对象转为数组
 		jinuxAjax({
 			url: '/upload',
 			type: 'POST',
@@ -22,9 +24,9 @@
 				age: 23
 			},
 			contentType: 'multipart/form-data',
-			files: [files.files[0]],
+			files: filesArr,
 			success:function(res){
-				console.log(res);
+				document.querySelector('h5').innerHTML = '文件上传成功';
 			}
 		});
 	}

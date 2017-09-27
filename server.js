@@ -19,43 +19,44 @@ app.set('port',process.env.PORT || 3000);   //设置端口
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-//home页路由
-app.get('/api', function (req, res) {
-  /*res.send({
-    error_code : 3001,
-    error_msg : "测试报错信息接口！！！"
-  });*/
-        console.log(req);
-        res.send('abcdefg');    
+
+app.get('/get', function (req, res) {
+        var data = {
+            info: req.query.info,
+            hostName: req.hostname
+        };
+        res.send(data);    
    
     
 });
-app.post('/api',function(req,res){
-    console.log(req);
-    setTimeout(function(){
-        res.send({
-            name: '小明'
-        });    
-    },0);
+
+app.post('/post_form',function(req,res){
+        var data = {
+            name: req.body.name,
+            info: req.body.info,
+            hostName: req.hostname
+        };
+        res.send(data);  
 });
-/*app.post('/upload',function(req,res){
-        var form = new formidable.IncomingForm();
-        form.uploadDir = __dirname+"/../public/pictures";
-        form.keepExtensions = true;
-        form.parse(req, function(err, fields, files,next){
-                console.log(fields);
-                //console.log(fields);
-                res.send('ok');
-        });
-});*/
+
+app.post('/post_json',function(req,res){
+        var data = {
+            name: req.body.name,
+            info: req.body.info,
+            hostName: req.hostname
+        };
+        res.send(data);   
+});
+
+
+//上传文件，也就是 contentType: 'multipart/form-data' 接口
 app.post('/upload', function(req, res) {
     var form = new multiparty.Form();
-   
+    form.encoding = 'utf-8';
+    form.uploadDir = __dirname+'/uploadFiles';
     form.parse(req, function(err, fields, files) {
-      console.log(fields);
-      console.log(files);
-      
-      res.send('ok');
+        console.log(fields);
+        res.send('ok');
     });
  
 });
