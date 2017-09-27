@@ -18,7 +18,14 @@
 		};
 
 		//参数对象继承获取新参数对象
-		var opt = Object.assign({}, defaultOpt, opt);
+		if(Object.assign){
+			var opt = Object.assign({}, defaultOpt, opt);
+		}else {
+			for(var name in defaultOpt){
+				defaultOpt[name] = opt[name] || defaultOpt[name];
+			}
+			var opt = defaultOpt;
+		}
 
 		requestData(opt);
 
