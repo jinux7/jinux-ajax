@@ -1,6 +1,5 @@
 ##这是一个极其简单的ajax封装函数库，都是一些简单的基础功能
-jinux-ajax库API
-
+>jinux-ajax库API<br>
 使用：
 jinuxAjax({
 			url: String,
@@ -41,8 +40,6 @@ success -> 请求成功回掉函数，参数为服务器端返回的数据
 error -> 请求失败回掉函数，参数为rquest对象
 -
 complete -> 请求完成之后回掉函数(无论成功还是失败)都执行
-
-/********************************************************************************************************************************/
-注意事项：在post请求，携带'multipart/form-data'数据的时候，比如FormData类型数据，不要request.setRequestHeader('Content-Type','multipart/form-data');
-		  在send数据的时候，ajax发现是FormData类型数据，会自动设置请求头的Content-Type类型，自己设置后台接收不到数据
-/********************************************************************************************************************************/
+-
+`注意事项：在post请求，携带'multipart/form-data'数据的时候，比如FormData类型数据，不要request.setRequestHeader('Content-Type','multipart/form-data');
+		  在send数据的时候，ajax发现是FormData类型数据，会自动设置请求头的Content-Type类型，自己设置后台接收不到数据`
