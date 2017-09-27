@@ -4,16 +4,16 @@ jinux-ajax库API
 -----
 使用：<br/>
 jinuxAjax({<br/>
->			url: String,<br/>
->			type: String,<br/>
->			data: json,<br/>
->			contentType: String,<br/>
->			files: Array,<br/>
->			timeOut: Int,<br/>
->			before: Function,<br/>
->			success: Function,<br/>
->			error: Function,<br/>
->			complete: Function<br/>
+>			url: String,
+>			type: String,
+>			data: json,
+>			contentType: String,
+>			files: Array,
+>			timeOut: Int,
+>			before: Function,
+>			success: Function,
+>			error: Function,
+>			complete: Function
 });<br/>
 
 参数说明：<br/>
