@@ -10,6 +10,7 @@ jinuxAjax({<br/>
 >			contentType: String,
 >			files: Array,
 >			timeOut: Int,
+> 			progress: Object,
 >			before: Function,
 >			success: Function,
 >			error: Function,
@@ -35,6 +36,17 @@ jinuxAjax({<br/>
 ##### files -> 这个属性是一个input上传文件夹数组，需要配合'multipart/form-data'这个属性使用
 -----
 ##### timeOut -> 设置超时毫秒数，不写默认5000ms
+-----
+##### progress -> 设置传输进度属性，例如：
+progress: {
+>				enable: true,
+>				receiveHandle: function(ev){
+>					proBar.style.width = Math.round(ev.loaded/ev.total*100)+'%';
+>				},
+>				successHandle: function(ev){
+>					console.log('ajax请求完成');	
+>				}
+>			}
 -----
 ##### before -> 请求之前调用函数，无参数
 -----

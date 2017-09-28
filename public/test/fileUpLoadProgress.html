@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jinux-ajax-test</title>
+</head>
+<style>
+	.progress {
+		width: 80%;
+		height: 20px;
+		background-color: #dddddd;
+		margin-top: 15px;
+	}
+	.bar {
+		width: 0%;
+		height: 100%;
+		background-color: skyblue;
+	}
+</style>
+<body>
+	<form action="">
+		<h3>可实现多文件上传!!</h3>
+		<input type="file" id="file" multiple="multiple" />
+		<div class="progress">
+			<div class="bar"></div>
+		</div>
+		<h5></h5>
+	</form>
+</body>
+<script src="/ajax.js"></script>
+<script>
+	var files = document.querySelector('#file');
+	var proBar = document.querySelector('.bar')
+	files.onchange = function(ev){
+		var filesArr = Array.from(files.files); //类数组对象转为数组
+		jinuxAjax({
+			url: '/upload',
+			type: 'POST',
+			timeOut: 500000,
+			data: {
+				name: 'admin',
+				age: 23
+			},
+			progress: {
+				enable: true,
+				receiveHandle: function(ev){
+ 					proBar.style.width = Math.round(ev.loaded/ev.total*100)+'%';
+				},
+				successHandle: function(ev){
+					console.log('ajax请求完成');	
+				}
+			},
+			contentType: 'multipart/form-data',
+			files: filesArr,
+			success:function(res){
+				console.log('ajax');
+				document.querySelector('h5').innerHTML = '文件上传成功';
+
+			}
+		});
+	}
+</script>
+</html>

@@ -11,6 +11,7 @@
 			contentType: 'application/x-www-form-urlencoded',//'text/plain;charset=UTF-8','application/json','multipart/form-data'
 			timeOut: 5000,
 			files:[],
+			progress: null,
 			before: fn,
 			success: fn,
 			error: fn,
@@ -112,6 +113,18 @@
 				opt.complete();
 			}
 		}
+		//处理接收进度事件
+		if(opt.progress.enable && request.upload){
+			request.upload.onprogress = function(ev){
+				if(ev.lengthComputable){
+					opt.progress.receiveHandle(ev);
+				}
+			}
+			request.upload.onload = function(ev){
+				opt.progress.successHandle(ev);
+			}
+		}
+		
 		if(opt.contentType === 'application/x-www-form-urlencoded'){
 			request.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
 			sendData = encodeFormData(opt.data);
